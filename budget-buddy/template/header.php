@@ -245,7 +245,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="/about" class="nav-link <?php echo $activeMenuItem[0] ===
-                            "About"
+                            "about"
                                 ? "active"
                                 : ""; ?>">About</a>
                         </li>
