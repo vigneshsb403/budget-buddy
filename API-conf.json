@@ -1,0 +1,6 @@
+{
+  "database": "apis",
+  "username": "root",
+  "password": "example",
+  "server": "localhost:8080"
+}
