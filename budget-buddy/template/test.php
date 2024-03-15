@@ -38,5 +38,13 @@ ${basename(__FILE__, ".php")} = function () {
 <?if(Session::isAuthenticated()){?>
 						<li><a href="/?logout" class="text-white">Logout</a></li>
 						<?} else {?>
-							<li><a href="/login.php" class="text-white">Login</a></li>
+							<li><a href="/login" class="text-white">Login</a></li>
 						<?}?>
+
+
+						<?php
+include "lib/load.php";
+loadTemplate("header", ["home", "Budget buddy", "Budget buddy"]);
+loadTemplate("billbanner");
+loadTemplate("footer");
+?>

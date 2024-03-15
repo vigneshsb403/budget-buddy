@@ -3,7 +3,6 @@
     <head>
         <script src="../assets/js/color-modes.js"></script>
         <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
-
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="" />
@@ -254,6 +253,13 @@
                             "about"
                                 ? "active"
                                 : ""; ?>">About</a>
+                        </li>
+                        <li class="nav-item">
+                        <?if(Session::isAuthenticated()){?>
+                            <a href="/?logout" class="nav-link">Logout</a>
+						<?} else {?>
+						<a href="/login" class="nav-link">Login</a>
+						<?}?>
                         </li>
                     </ul>
 

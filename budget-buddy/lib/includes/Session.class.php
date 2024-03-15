@@ -67,8 +67,8 @@ class Session
     public static function isOwnerOf($owner)
     {
         $sess_user = Session::getUser();
-        if($sess_user) {
-            if($sess_user->getEmail() == $owner) {
+        if ($sess_user) {
+            if ($sess_user->getEmail() == $owner) {
                 return true;
             } else {
                 return false;
@@ -78,26 +78,28 @@ class Session
         }
     }
 
-
     public static function loadTemplate($name, $data = [])
     {
         extract($data);
-        $script = $_SERVER['DOCUMENT_ROOT'] . get_config('base_path') . "_templates/$name.php";
+        $script =
+            $_SERVER["DOCUMENT_ROOT"] .
+            get_config("base_path") .
+            "_templates/$name.php";
         if (is_file($script)) {
             include $script;
         } else {
-            Session::loadTemplate('_error');
+            Session::loadTemplate("_error");
         }
     }
 
     public static function renderPage()
     {
-        Session::loadTemplate('_master');
+        Session::loadTemplate("_master");
     }
 
     public static function currentScript()
     {
-        return basename($_SERVER['SCRIPT_NAME'], '.php');
+        return basename($_SERVER["SCRIPT_NAME"], ".php");
     }
 
     public static function isAuthenticated()
@@ -112,8 +114,8 @@ class Session
     public static function ensureLogin()
     {
         if (!Session::isAuthenticated()) {
-            Session::set('_redirect', $_SERVER['REQUEST_URI']);
-            header("Location: /login.php");
+            Session::set("_redirect", $_SERVER["REQUEST_URI"]);
+            header("Location: /login");
             die();
         }
     }

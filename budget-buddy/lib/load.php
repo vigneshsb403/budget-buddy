@@ -1,11 +1,23 @@
 <?php
+// require "vendor/autoload.php";
+include_once "includes/REST.class.php";
+include_once "includes/API.class.php";
+include_once "includes/Session.class.php";
+include_once "includes/Mic.class.php";
+include_once "includes/User.class.php";
+include_once "includes/Database.class.php";
+include_once "includes/UserSession.class.php";
+include_once "includes/WebAPI.class.php";
 function loadTemplate($name, $activeMenuItem = [])
 {
     if ($activeMenuItem !== null) {
         extract($activeMenuItem);
     }
     include __DIR__ . "/../template/$name.php";
-} ?>
+}
+$wapi = new WebAPI();
+$wapi->initiateSession();
+?>
 <?php function fetchTableData($period)
 {
     $servername = "db";
@@ -66,7 +78,8 @@ function loadTemplate($name, $activeMenuItem = [])
     $conn->close();
 } ?>
 
-<?php function fetchExpenditureData($table, $period)
+<?php
+function fetchExpenditureData($table, $period)
 {
     $servername = "db";
     $username = "root";
@@ -139,4 +152,30 @@ function loadTemplate($name, $activeMenuItem = [])
         ],
     ];
     return json_encode($chartData);
-} ?>
+}
+function get_config($key, $default = null)
+{
+    global $__site_config;
+    $json_config = '{
+        "db_server": "db",
+        "db_username": "root",
+        "db_password": "example",
+        "db_name": "vignesh_photogram",
+        "base_path": "/",
+        "upload_path": "/home/sibidharan/photogram_uploads/"
+    }'; // $array = json_decode($json_config, true);
+    $array = [
+        "db_server" => "db",
+        "db_username" => "root",
+        "db_password" => "example",
+        "db_name" => "vignesh_photogram",
+        "base_path" => "/",
+        "upload_path" => "/home/sibidharan/photogram_uploads/",
+    ];
+    if (isset($array[$key])) {
+        return $array[$key];
+    } else {
+        return $default;
+    }
+}
+ ?>

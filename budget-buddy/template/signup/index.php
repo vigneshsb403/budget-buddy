@@ -23,7 +23,7 @@ if (
 	<div class="bg-light p-5 rounded mt-3">
 		<h1>Signup Success</h1>
 		<p class="lead">Now you can login from <a
-				href="<?= get_config("base_path") ?>login.php">here</a>.
+				href="<?= get_config("base_path") ?>login">here</a>.
 		</p>
 
 	</div>

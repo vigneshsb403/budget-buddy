@@ -1,0 +1,8 @@
+{
+  "db_server": "db",
+  "db_username": "root",
+  "db_password": "example",
+  "db_name": "vignesh_photogram",
+  "base_path": "/",
+  "upload_path": "/home/sibidharan/photogram_uploads/"
+}
