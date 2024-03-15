@@ -53,8 +53,8 @@ function addExpenseToTable($date, $amount)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "budget-buddies";
-
+    $database = "vignesh_photogram";
+    $usernamee = Session::getUser()->getUsername();
     // Create connection
     $conn = new mysqli($servername, $username, $password, $database);
 
@@ -65,11 +65,11 @@ function addExpenseToTable($date, $amount)
 
     // Prepare SQL statement
     $stmt = $conn->prepare(
-        "INSERT INTO expenditure_data (date, expenditure_amount) VALUES (?, ?)"
+        "INSERT INTO expenditure_data (date, expenditure_amount, user_name) VALUES (?, ?, ?)"
     );
 
     // Bind parameters
-    $stmt->bind_param("sd", $date, $amount);
+    $stmt->bind_param("sds", $date, $amount, $usernamee);
 
     // Execute statement
     $stmt->execute();
@@ -88,6 +88,8 @@ if (isset($_POST["submit"])) {
     // Call function to add expense to table
     addExpenseToTable($selectedDate, $expenseAmount);
     echo "<script>alert('expense added scussfully')</script>";
+} else {
+    echo "<script>alert('expense not added')</script>";
 }
 
 

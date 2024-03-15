@@ -20,6 +20,9 @@ if (!$login_page) {
             $redirect_to = $should_redirect;
             Session::set("_redirect", false);
         }
+        if ($redirect_to == "") {
+            $redirect_to = "/";
+        }
         ?>
 <script>
 	window.location.href = "<?= $redirect_to ?>"

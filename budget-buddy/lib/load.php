@@ -20,10 +20,11 @@ $wapi->initiateSession();
 ?>
 <?php function fetchTableData($period)
 {
+    $usernamee = Session::getUser()->getUsername();
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "budget-buddies";
+    $database = "vignesh_photogram";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -50,7 +51,7 @@ $wapi->initiateSession();
     }
     $sql = "SELECT * FROM expenditure_data";
     if (!is_null($startDate) && !is_null($endDate)) {
-        $sql .= " WHERE date BETWEEN '$startDate' AND '$endDate'";
+        $sql .= " WHERE date BETWEEN '$startDate' AND '$endDate' AND user_name = '$usernamee'";
     }
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
@@ -81,10 +82,11 @@ $wapi->initiateSession();
 <?php
 function fetchExpenditureData($table, $period)
 {
+    $usernamee = Session::getUser()->getUsername();
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "budget-buddies";
+    $database = "vignesh_photogram";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -98,6 +100,7 @@ function fetchExpenditureData($table, $period)
             $sql = "SELECT date, SUM(expenditure_amount) AS total_amount
                     FROM $table
                     WHERE date BETWEEN '$startDate' AND '$endDate'
+                    AND user_name = '$usernamee'
                     GROUP BY date";
             break;
         case "month":
@@ -106,6 +109,7 @@ function fetchExpenditureData($table, $period)
             $sql = "SELECT date, SUM(expenditure_amount) AS total_amount
                     FROM $table
                     WHERE date BETWEEN '$startDate' AND '$endDate'
+                    AND user_name = '$usernamee'
                     GROUP BY date";
             break;
         case "year":
@@ -114,16 +118,19 @@ function fetchExpenditureData($table, $period)
             $sql = "SELECT date, SUM(expenditure_amount) AS total_amount
                     FROM $table
                     WHERE date BETWEEN '$startDate' AND '$endDate'
+                    AND user_name = '$usernamee' -- Apply username constraint
                     GROUP BY date";
             break;
         case "history":
             $sql = "SELECT date, SUM(expenditure_amount) AS total_amount
-                    FROM $table
-                    GROUP BY date";
+                FROM $table
+                WHERE user_name = '$usernamee'
+                GROUP BY date";
             break;
         default:
             $sql = "SELECT date, SUM(expenditure_amount) AS total_amount
                 FROM $table
+                WHERE user_name = '$usernamee'
                 GROUP BY date";
     }
     $result = $conn->query($sql);
