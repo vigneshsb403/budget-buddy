@@ -79,6 +79,7 @@ function addExpenseToTable($date, $amount)
     $conn->close();
 }
 
+$hacked = 0;
 // Check if form is submitted
 if (isset($_POST["submit"])) {
     // Get form data
@@ -89,7 +90,12 @@ if (isset($_POST["submit"])) {
     addExpenseToTable($selectedDate, $expenseAmount);
     echo "<script>alert('expense added scussfully')</script>";
 } else {
-    echo "<script>alert('expense not added')</script>";
+    if ($hacked) {
+        echo "<script>alert('expense not added')</script>";
+        $hacked = $hacked + 1;
+    } else {
+        $hacked = $hacked + 1;
+    }
 }
 
 

@@ -1,110 +1,42 @@
-<body>
-<div class="container">
-  <h4 class="mb-3">Bill Splitter</h4>
-  <form class="needs-validation" novalidate>
-    <div class="row g-3">
-      <div class="col-sm-6">
-        <label for="billTitle" class="form-label">Bill Title</label>
-        <input type="text" class="form-control" id="billTitle" placeholder="Enter bill title" required>
-        <div class="invalid-feedback">
-          Valid bill title is required.
-        </div>
-      </div>
+<?php
+// Assuming you have already established a database connection
+$hacker = Session::getUser()->getUsername();
+$servername = "db";
+$username = "root";
+$password = "example";
+$database = "vignesh_photogram";
+$conn = new mysqli($servername, $username, $password, $database);
+$sql = "SELECT id, bill_title, bill_cost, note, username, created_at, created_by FROM notification_table WHERE username = '$hacker'";
+$result = $conn->query($sql);
 
-      <div class="col-sm-6">
-        <label for="billCost" class="form-label">Bill Cost</label>
-        <input type="number" step="0.01" class="form-control" id="billCost" placeholder="Enter bill cost" required>
-        <div class="invalid-feedback">
-          Valid bill cost is required.
-        </div>
-      </div>
+if ($result->num_rows > 0) {
+    // Output data of each row
+    while ($row = $result->fetch_assoc()) {
+        echo "<div>";
+        echo "<h3>Bill Title: " . $row["bill_title"] . "</h3>";
+        echo "<p>Bill Cost: $" . $row["bill_cost"] . "</p>";
+        echo "<p>Note: " . $row["note"] . "</p>";
+        echo "<p>Username: " . $row["username"] . "</p>";
+        echo "<p>Created At: " . $row["created_at"] . "</p>";
+        echo "<p>Created By: " . $row["created_by"] . "</p>";
 
-      <div class="col-12">
-        <label for="numSplitters" class="form-label">Number of Splitters</label>
-        <input type="number" class="form-control" id="numSplitters" placeholder="Enter number of splitters" required>
-        <div class="invalid-feedback">
-          Please enter the number of splitters.
-        </div>
-      </div>
-
-      <div id="userInputs"></div> <!-- Container to dynamically add user input fields -->
-
-      <div class="col-12">
-        <label for="note" class="form-label">Note <span class="text-body-secondary">(Optional)</span></label>
-        <textarea class="form-control" id="note" placeholder="Enter any additional notes"></textarea>
-      </div>
-    </div>
-    <button class="btn btn-primary mt-3" type="submit">Submit</button>
-  </form>
-</div>
-<script>
-  document.getElementById('numSplitters').addEventListener('input', function() {
-    const numSplitters = parseInt(this.value);
-    const userInputsContainer = document.getElementById('userInputs');
-    userInputsContainer.innerHTML = ''; // Clear previous inputs
-
-    const firstUsername = '<?= Session::getUser()->getUsername() ?>'; // Auto-fill first username
-
-    for (let i = 0; i < numSplitters; i++) {
-      const userInputGroup = document.createElement('div');
-      userInputGroup.className = 'col-12';
-      userInputGroup.innerHTML = `
-        <label for="username${i + 1}" class="form-label">Username ${i + 1}</label>
-        <div class="input-group has-validation">
-          <span class="input-group-text">@</span>
-          <input type="text" class="form-control" id="username${i + 1}" value="${i === 0 ? firstUsername : ''}" placeholder="Username" required>
-          <div class="invalid-feedback">
-            Your username is required.
-          </div>
-        </div>
-      `;
-      userInputsContainer.appendChild(userInputGroup);
+        // Form to accept or reject the bill
+        echo "<form action='process_response.php' method='post'>";
+        echo "<input type='hidden' name='notification_id' value='" .
+            $row["id"] .
+            "'>";
+        echo "<label for='accept'>Accept</label>";
+        echo "<input type='radio' id='accept' name='action' value='accept'>";
+        echo "<label for='reject'>Reject</label>";
+        echo "<input type='radio' id='reject' name='action' value='reject'>";
+        echo "<button type='submit'>Submit</button>";
+        echo "</form>";
+        echo "</div>";
     }
-  });
+} else {
+    echo "0 results";
+}
 
-  const form = document.querySelector('.needs-validation');
-
-  form.addEventListener('submit', async function(event) {
-    if (!form.checkValidity()) {
-      event.preventDefault();
-      event.stopPropagation();
-      form.classList.add('was-validated');
-      return;
-    }
-
-    event.preventDefault();
-
-    const billTitle = document.getElementById('billTitle').value;
-    const billCost = document.getElementById('billCost').value;
-    const note = document.getElementById('note').value;
-    const numSplitters = parseInt(document.getElementById('numSplitters').value);
-
-    const usernames = [];
-
-    for (let i = 0; i < numSplitters; i++) {
-      usernames.push(document.getElementById(`username${i + 1}`).value);
-    }
-
-    const response = await fetch('proces_bill', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        billTitle,
-        billCost,
-        note,
-        usernames
-      })
-    });
-
-    if (response.ok) {
-      alert('Bill added successfully!');
-      form.reset();
-      form.classList.remove('was-validated');
-    } else {
-      alert('Failed to add bill. Please try again.');
-    }
-  });
-</script>
-</body>
+// Close the database connection
+$conn->close();
+?>

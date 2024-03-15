@@ -16,8 +16,8 @@
     <div class="row align-items-md-stretch">
       <div class="col-md-6">
         <div class="h-100 p-5 text-bg-dark rounded-3">
-          <h2>About Us</h2>
-          <p>Learn more about us in the below link</p>
+          <h2>Check Notification</h2>
+          <p>check if you have any bill dues!</p>
           <button
                 type="button"
                 class="btn btn-primary btn-lg me-sm-3 px-4"

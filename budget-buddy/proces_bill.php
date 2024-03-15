@@ -1,5 +1,6 @@
 <?php
 // Connect to the database
+include "lib/load.php";
 $servername = "db";
 $usernamee = "root";
 $password = "example";
@@ -17,6 +18,7 @@ $billTitle = $data["billTitle"];
 $billCost = $data["splitAmount"];
 $note = $data["note"];
 $usernames = $data["usernames"];
+$creatername = Session::getUser()->getUsername();
 
 // Prepare SQL query to check if all usernames are available in the auth table
 $sql =
@@ -30,9 +32,16 @@ if ($result->num_rows === count($usernames)) {
 
     // Prepare SQL statement to add the bill to the notification table
     $stmt = $conn->prepare(
-        "INSERT INTO notification_table (bill_title, bill_cost, note, username) VALUES (?, ?, ?, ?)"
+        "INSERT INTO notification_table (bill_title, bill_cost, note, username, created_by) VALUES (?, ?, ?, ?, ?)"
     );
-    $stmt->bind_param("sdss", $billTitle, $billCost, $note, $username);
+    $stmt->bind_param(
+        "sdsss",
+        $billTitle,
+        $billCost,
+        $note,
+        $username,
+        $creatername
+    );
 
     // Insert the bill for each username
     foreach ($usernames as $username) {
