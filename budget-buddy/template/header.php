@@ -226,6 +226,12 @@
                                 : ""; ?>">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a href="/addexpence" class="nav-link <?php echo $activeMenuItem[0] ===
+                            "addexp"
+                                ? "active"
+                                : ""; ?>">Add Exp</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/bills" class="nav-link <?php echo $activeMenuItem[0] ===
                             "bills"
                                 ? "active"

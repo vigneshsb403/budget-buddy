@@ -1,82 +1,79 @@
-<div class="col-md-7 col-lg-8">
-        <h4 class="mb-3">Billing address</h4>
-        <form class="needs-validation" novalidate>
-          <div class="row g-3">
-            <div class="col-sm-6">
-              <label for="firstName" class="form-label">First name</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
-              <div class="invalid-feedback">
-                Valid first name is required.
-              </div>
-            </div>
+<body>
+<div class="container">
+  <h4 class="mb-3">Bill Splitter</h4>
+  <form class="needs-validation" novalidate>
+    <div class="row g-3">
+      <div class="col-sm-6">
+        <label for="billTitle" class="form-label">Bill Title</label>
+        <input type="text" class="form-control" id="billTitle" placeholder="Enter bill title" required>
+        <div class="invalid-feedback">
+          Valid bill title is required.
+        </div>
+      </div>
 
-            <div class="col-sm-6">
-              <label for="lastName" class="form-label">Last name</label>
-              <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
-              <div class="invalid-feedback">
-                Valid last name is required.
-              </div>
-            </div>
+      <div class="col-sm-6">
+        <label for="billCost" class="form-label">Bill Cost</label>
+        <input type="number" step="0.01" class="form-control" id="billCost" placeholder="Enter bill cost" required>
+        <div class="invalid-feedback">
+          Valid bill cost is required.
+        </div>
+      </div>
 
-            <div class="col-12">
-              <label for="username" class="form-label">Username</label>
-              <div class="input-group has-validation">
-                <span class="input-group-text">@</span>
-                <input type="text" class="form-control" id="username" placeholder="Username" required>
-              <div class="invalid-feedback">
-                  Your username is required.
-                </div>
-              </div>
-            </div>
+      <div class="col-12">
+        <label for="numSplitters" class="form-label">Number of Splitters</label>
+        <input type="number" class="form-control" id="numSplitters" placeholder="Enter number of splitters" required>
+        <div class="invalid-feedback">
+          Please enter the number of splitters.
+        </div>
+      </div>
 
-            <div class="col-12">
-              <label for="email" class="form-label">Email <span class="text-body-secondary">(Optional)</span></label>
-              <input type="email" class="form-control" id="email" placeholder="you@example.com">
-              <div class="invalid-feedback">
-                Please enter a valid email address for shipping updates.
-              </div>
-            </div>
+      <div id="userInputs"></div> <!-- Container to dynamically add user input fields -->
 
-            <div class="col-12">
-              <label for="address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
-              <div class="invalid-feedback">
-                Please enter your shipping address.
-              </div>
-            </div>
+      <div class="col-12">
+        <label for="note" class="form-label">Note <span class="text-body-secondary">(Optional)</span></label>
+        <textarea class="form-control" id="note" placeholder="Enter any additional notes"></textarea>
+      </div>
+    </div>
+    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+  </form>
+</div>
+<script>
+  document.getElementById('numSplitters').addEventListener('input', function() {
+    const numSplitters = parseInt(this.value);
+    const userInputsContainer = document.getElementById('userInputs');
+    userInputsContainer.innerHTML = ''; // Clear previous inputs
 
-            <div class="col-12">
-              <label for="address2" class="form-label">Address 2 <span class="text-body-secondary">(Optional)</span></label>
-              <input type="text" class="form-control" id="address2" placeholder="Apartment or suite">
-            </div>
-
-            <div class="col-md-5">
-              <label for="country" class="form-label">Country</label>
-              <select class="form-select" id="country" required>
-                <option value="">Choose...</option>
-                <option>United States</option>
-              </select>
-              <div class="invalid-feedback">
-                Please select a valid country.
-              </div>
-            </div>
-
-            <div class="col-md-4">
-              <label for="state" class="form-label">State</label>
-              <select class="form-select" id="state" required>
-                <option value="">Choose...</option>
-                <option>California</option>
-              </select>
-              <div class="invalid-feedback">
-                Please provide a valid state.
-              </div>
-            </div>
-
-            <div class="col-md-3">
-              <label for="zip" class="form-label">Zip</label>
-              <input type="text" class="form-control" id="zip" placeholder="" required>
-              <div class="invalid-feedback">
-                Zip code required.
-              </div>
-            </div>
+    for (let i = 0; i < numSplitters; i++) {
+      const userInputGroup = document.createElement('div');
+      userInputGroup.className = 'col-12';
+      userInputGroup.innerHTML = `
+        <label for="username${i + 1}" class="form-label">Username ${i + 1}</label>
+        <div class="input-group has-validation">
+          <span class="input-group-text">@</span>
+          <input type="text" class="form-control" id="username${i + 1}" placeholder="Username" required>
+          <div class="invalid-feedback">
+            Your username is required.
           </div>
+        </div>
+      `;
+      userInputsContainer.appendChild(userInputGroup);
+    }
+  });
+  (() => {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+
+    Array.from(forms).forEach(form => {
+      form.addEventListener('submit', event => {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+  })()
+</script>
+
+</body>
