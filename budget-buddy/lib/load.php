@@ -313,4 +313,30 @@ function addExpenseToTable($date, $amount)
     $stmt->close();
     $conn->close();
 }
+function deleteRecord($table, $condition, $params)
+{
+    // Database connection parameters
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram"; // Create connection
+    $conn = new mysqli($servername, $username, $password, $database); // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } // Prepare the SQL statement with placeholders
+    $sql = "DELETE FROM $table WHERE $condition";
+    $stmt = $conn->prepare($sql);
+    // Bind parameters if provided
+    if (!empty($params)) {
+        $stmt->bind_param(...$params);
+    }
+    // Execute the delete query
+    if ($stmt->execute() === true) {
+        echo "Record deleted successfully";
+    } else {
+        echo "Error deleting record: " . $conn->error;
+    } // Close statement and connection
+    $stmt->close();
+    $conn->close();
+}
  ?>
