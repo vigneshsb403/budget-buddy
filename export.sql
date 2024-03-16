@@ -20,15 +20,16 @@ CREATE TABLE `auth` (
   `blocked` int NOT NULL DEFAULT '0',
   `active` tinyint NOT NULL DEFAULT '0',
   `sec_email` varchar(255) DEFAULT NULL,
+  `currency` int DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `phone` (`phone`),
   UNIQUE KEY `name` (`username`(20)),
   UNIQUE KEY `email` (`email`(32))
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `auth` (`id`, `username`, `password`, `phone`, `email`, `blocked`, `active`, `sec_email`) VALUES
-(1,	'vignesh',	'$2y$09$m6v.eDJ2ElDBUa7caKDPZOSwYHubIu1KNZDtaF3EuPDLuAfMgy9tK',	'8754059030',	'vignesh@icloud.com',	0,	0,	NULL),
-(2,	'hacker',	'$2y$09$Th2seLupCPgI/1o22r3GFeEjX5FptfvPACka0LIB9xiChRGlteLyi',	'9876543210',	'hacker@gmail.com',	0,	0,	NULL);
+INSERT INTO `auth` (`id`, `username`, `password`, `phone`, `email`, `blocked`, `active`, `sec_email`, `currency`) VALUES
+(1,	'vignesh',	'$2y$09$m6v.eDJ2ElDBUa7caKDPZOSwYHubIu1KNZDtaF3EuPDLuAfMgy9tK',	'8754059030',	'vignesh@icloud.com',	0,	0,	NULL,	1),
+(2,	'hacker',	'$2y$09$Th2seLupCPgI/1o22r3GFeEjX5FptfvPACka0LIB9xiChRGlteLyi',	'9876543210',	'hacker@gmail.com',	0,	0,	NULL,	0);
 
 DROP TABLE IF EXISTS `expenditure_data`;
 CREATE TABLE `expenditure_data` (
@@ -42,7 +43,8 @@ CREATE TABLE `expenditure_data` (
 INSERT INTO `expenditure_data` (`id`, `date`, `expenditure_amount`, `user_name`) VALUES
 (2,	'2024-03-14',	123.00,	'vignesh'),
 (3,	'2024-03-12',	450.00,	'vignesh'),
-(4,	'2024-03-06',	1234.00,	'hacker');
+(4,	'2024-03-06',	1234.00,	'hacker'),
+(5,	'2024-03-13',	0.00,	'hacker');
 
 DROP TABLE IF EXISTS `likes`;
 CREATE TABLE `likes` (
@@ -65,17 +67,15 @@ CREATE TABLE `notification_table` (
   `note` text,
   `username` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_by` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `notification_table` (`id`, `bill_title`, `bill_cost`, `note`, `username`, `created_at`) VALUES
-(1,	'haced',	345.00,	'dfefd',	'hacker',	'2024-03-15 16:22:16'),
-(2,	'hddddd',	456.00,	'you got hacked',	'hacker',	'2024-03-15 16:24:51'),
-(3,	'hddddd',	456.00,	'you got hacked',	'vignesh',	'2024-03-15 16:24:51'),
-(4,	'lhfdlfjd',	234.00,	'fdfdsf',	'hacker',	'2024-03-15 16:36:15'),
-(5,	'lhfdlfjd',	234.00,	'fdfdsf',	'vignesh',	'2024-03-15 16:36:15'),
-(6,	'dfasdfdasf',	500.00,	'sfdsf',	'hacker',	'2024-03-15 16:40:18'),
-(7,	'dfasdfdasf',	500.00,	'sfdsf',	'vignesh',	'2024-03-15 16:40:18');
+INSERT INTO `notification_table` (`id`, `bill_title`, `bill_cost`, `note`, `username`, `created_at`, `created_by`) VALUES
+(8,	'hacked',	117.00,	'asks',	'hacker',	'2024-03-15 17:05:57',	'hacker'),
+(9,	'hacked',	117.00,	'asks',	'vignesh',	'2024-03-15 17:05:57',	'hacker'),
+(10,	'hacdfdfdfd',	172.50,	'dfdsfd',	'vignesh',	'2024-03-15 17:55:51',	'vignesh'),
+(11,	'hacdfdfdfd',	172.50,	'dfdsfd',	'hacker',	'2024-03-15 17:55:51',	'vignesh');
 
 DROP TABLE IF EXISTS `post_images`;
 CREATE TABLE `post_images` (
@@ -101,6 +101,18 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf32 COLLATE=utf32_bin;
 
 
+DROP TABLE IF EXISTS `return_notification`;
+CREATE TABLE `return_notification` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `bill_id` int DEFAULT NULL,
+  `action` varchar(10) DEFAULT NULL,
+  `reason` text,
+  `image_path` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 DROP TABLE IF EXISTS `session`;
 CREATE TABLE `session` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -121,7 +133,7 @@ INSERT INTO `session` (`id`, `uid`, `token`, `login_time`, `ip`, `user_agent`, `
 (7,	2,	'8551a32d42aad48aa624f8a0eac74fc4',	'2024-03-15 16:01:46',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
 (8,	2,	'7771ad8588b0319dfeb199f4675a3545',	'2024-03-15 16:02:20',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
 (9,	2,	'd813450c4b9406b81ec6e61f0cb684ad',	'2024-03-15 16:02:32',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
-(13,	2,	'50300a7df7ebaeb3f792dd7b68fafcd2',	'2024-03-15 16:03:56',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8');
+(15,	1,	'dc3101fa51c95a954988bf64abb5d8ff',	'2024-03-15 17:51:08',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8');
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -139,4 +151,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- 2024-03-15 16:46:57
+-- 2024-03-16 07:13:10

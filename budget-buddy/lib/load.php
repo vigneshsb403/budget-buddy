@@ -8,6 +8,34 @@ include_once "includes/User.class.php";
 include_once "includes/Database.class.php";
 include_once "includes/UserSession.class.php";
 include_once "includes/WebAPI.class.php";
+
+function changecurrency($cur)
+{
+    $currencychangename = Session::getUser()->getUsername();
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram";
+    $conn = new mysqli($servername, $username, $password, $database);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } // Prepare SQL query
+    $stmt = $conn->prepare("UPDATE auth SET currency = ? WHERE username = ?");
+
+    // Bind parameters
+    $stmt->bind_param("is", $cur, $currencychangename);
+
+    // Execute statement
+    if ($stmt->execute()) {
+        // echo "Currency value updated successfully.";
+    } else {
+        // echo "Error updating currency value: " . $conn->error;
+    }
+
+    // Close statement and connection
+    $stmt->close();
+    $conn->close();
+}
 function loadTemplate($name, $activeMenuItem = [])
 {
     if ($activeMenuItem !== null) {
@@ -184,5 +212,26 @@ function get_config($key, $default = null)
     } else {
         return $default;
     }
+}
+function fetchUserContactInfo($usernameprofile)
+{
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram";
+    $conn = new mysqli($servername, $username, $password, $database);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    } // Prepare SQL query
+    $sql = "SELECT email, phone FROM auth WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    // Bind parameters and execute
+    $stmt->bind_param("s", $usernameprofile);
+    $stmt->execute(); // Bind result variables
+    $stmt->bind_result($email, $phone); // Fetch result
+    $stmt->fetch(); // Close statement and connection
+    $stmt->close();
+    $conn->close(); // Return contact info
+    return ["email" => $email, "phone" => $phone];
 }
  ?>

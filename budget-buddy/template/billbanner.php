@@ -21,9 +21,9 @@
           <button
                 type="button"
                 class="btn btn-primary btn-lg me-sm-3 px-4"
-                onclick="window.location.href = '/about';"
+                onclick="window.location.href = '/test';"
             >
-            About us
+            test
             </button>
         </div>
       </div>
