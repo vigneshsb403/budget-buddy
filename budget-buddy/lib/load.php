@@ -9,7 +9,7 @@ include_once "includes/Database.class.php";
 include_once "includes/UserSession.class.php";
 include_once "includes/WebAPI.class.php";
 
-function changecurrency($cur)
+function changecurrencyy($cur)
 {
     $currencychangename = Session::getUser()->getUsername();
     $servername = "db";

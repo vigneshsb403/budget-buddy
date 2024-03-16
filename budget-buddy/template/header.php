@@ -14,6 +14,52 @@
         />
 
         <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- <script>
+     			const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+				.then(FingerprintJS => FingerprintJS.load())
+
+			// Get the visitor identifier when you need it.
+			fpPromise
+				.then(fp => fp.get())
+				.then(result => {
+					// This is the visitor identifier:
+					const visitorId = result.visitorId
+					// console.log(visitorId)
+					// $('#fingerprint').val(visitorId);
+					// set a cookie
+					setCookie('fingerprint', visitorId, 1);
+				})
+		</script> -->
+		<script>
+  function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // Load FingerprintJS library and get the visitor identifier
+    const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
+        .then(FingerprintJS => FingerprintJS.load())
+        .then(fp => fp.get())
+        .then(result => {
+            // This is the visitor identifier:
+            const visitorId = result.visitorId;
+            // Set the cookie with the visitor identifier
+            setCookie('fingerprint', visitorId, 1); // Expires in 1 day
+        })
+        .catch(error => {
+            console.error('Error loading FingerprintJS:', error);
+        });
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+			integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous">
+		</script>
+		<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
         <style>
             .bd-placeholder-img {
                 font-size: 1.125rem;

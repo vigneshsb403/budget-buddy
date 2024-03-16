@@ -1,4 +1,5 @@
 <?php
+/*
 // Database connection
 
 // Function to fetch notifications
@@ -73,11 +74,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 }
-?>
+*/
+?> <!--
 <body>
     <h2>Notifications</h2>
     <ul>
     <?php
+/*
     $notifications = fetchNotifications();
     foreach ($notifications as $notification) {
         echo "<li>{$notification["bill_title"]} - {$notification["bill_cost"]} <br>";
@@ -90,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "<input type='file' name='image'>";
         echo "</form>";
         echo "</li>";
-    }
-    ?>
+        }*/
+?>
     </ul>
-</body>
+    </body> -->

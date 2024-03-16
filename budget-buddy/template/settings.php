@@ -1,7 +1,7 @@
 <?php
 if (isset($_POST["currencyselect"])) {
     $currency = $_POST["currencyselect"];
-    changecurrency($currency);
+    changecurrencyy($currency);
 } ?>
 <style>
 html,
