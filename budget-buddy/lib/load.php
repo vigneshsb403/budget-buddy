@@ -260,9 +260,57 @@ function fetchUserContactInfo($usernameprofile)
     $stmt->bind_param("s", $usernameprofile);
     $stmt->execute(); // Bind result variables
     $stmt->bind_result($email, $phone); // Fetch result
-    $stmt->fetch(); // Close statement and connection
+    $stmt->fetch();
     $stmt->close();
-    $conn->close(); // Return contact info
+    $conn->close();
     return ["email" => $email, "phone" => $phone];
+}
+function getNotifications($usernamenotification)
+{
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram";
+    $conn = new mysqli($servername, $username, $password, $database);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $sql = "SELECT * FROM notification_table WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $usernamenotification);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $notifications = [];
+    while ($row = $result->fetch_assoc()) {
+        $notifications[] = $row;
+    } // Close statement and connection
+    $stmt->close();
+    $conn->close();
+    return $notifications;
+}
+function addExpenseToTable($date, $amount)
+{
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram";
+    $usernamee = Session::getUser()->getUsername();
+    $ifdivide = getcurrency($usernamee);
+    $conn = new mysqli($servername, $username, $password, $database);
+    $billllCost = $amount;
+    if ($ifdivide == 1) {
+        $billllCost = $amount * 78;
+    } // Check connection
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    // Prepare SQL statement
+    $stmt = $conn->prepare(
+        "INSERT INTO expenditure_data (date, expenditure_amount, user_name) VALUES (?, ?, ?)"
+    ); // Bind parameters
+    $stmt->bind_param("sds", $date, $billllCost, $usernamee); // Execute statement
+    $stmt->execute(); // Close statement and connection
+    $stmt->close();
+    $conn->close();
 }
  ?>

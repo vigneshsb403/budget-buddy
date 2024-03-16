@@ -45,9 +45,8 @@
 </script>
 
 </body>
-</html>
-
 <?php
+/*
 function addExpenseToTable($date, $amount)
 {
     $servername = "db";
@@ -81,6 +80,7 @@ function addExpenseToTable($date, $amount)
     $stmt->close();
     $conn->close();
 }
+*/
 
 $hacked = 0;
 // Check if form is submitted

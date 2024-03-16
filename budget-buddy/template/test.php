@@ -1,99 +1,45 @@
 <?php
-/*
-// Database connection
-
-// Function to fetch notifications
-function fetchNotifications()
-{
-    $servername = "db";
-    $username = "root";
-    $password = "example";
-    $database = "vignesh_photogram";
-    $conn = new mysqli($servername, $username, $password, $database);
-    $username = Session::getUser()->getUsername();
-    $sql = "SELECT * FROM notification_table WHERE username = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result->fetch_all(MYSQLI_ASSOC);
-}
-
-// Function to update notification action
-function updateNotificationAction($id, $action, $bill_id, $reason, $image_path)
-{
-    $servername = "db";
-    $username = "root";
-    $password = "example";
-    $database = "vignesh_photogram";
-    $conn = new mysqli($servername, $username, $password, $database);
-    $username = Session::getUser()->getUsername();
-    $sql =
-        "INSERT INTO return_notification (action, bill_id, reason, image_path) VALUES (?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssss", $action, $bill_id, $reason, $image_path);
-    return $stmt->execute();
-}
-
-// Handle form submission
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST["accept"])) {
-        $id = $_POST["notification_id"];
-        $action = "accept";
-        if (
-            updateNotificationAction(
-                $id,
-                $action,
-                $bill_id,
-                $reason,
-                $image_path
-            )
-        ) {
-            // Process image upload
-            $billId = $_POST["bill_id"];
-            $imagePath = "uploads/" . basename($_FILES["image"]["name"]);
-            move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath);
-
-            // Update notification table with image path and action
-            $sql =
-                "UPDATE notification_table SET action = ?, image_path = ? WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ssi", $action, $imagePath, $id);
-            $stmt->execute();
-            echo "Notification accepted successfully.";
-        } else {
-            echo "Error updating notification.";
-        }
-    } elseif (isset($_POST["reject"])) {
-        $id = $_POST["notification_id"];
-        $action = "reject";
-        if (updateNotificationAction($id, $action)) {
-            echo "Notification rejected successfully.";
-        } else {
-            echo "Error updating notification.";
-        }
-    }
-}
-*/
-?> <!--
-<body>
-    <h2>Notifications</h2>
-    <ul>
-    <?php
-/*
-    $notifications = fetchNotifications();
-    foreach ($notifications as $notification) {
-        echo "<li>{$notification["bill_title"]} - {$notification["bill_cost"]} <br>";
-        echo "{$notification["note"]} <br>";
-        echo "<form method='post' enctype='multipart/form-data'>";
-        echo "<input type='hidden' name='notification_id' value='{$notification["id"]}'>";
-        echo "<input type='hidden' name='bill_id' value='{$notification["id"]}'>";
-        echo "<input type='submit' name='accept' value='Accept'>";
-        echo "<input type='submit' name='reject' value='Reject'>";
-        echo "<input type='file' name='image'>";
-        echo "</form>";
-        echo "</li>";
-        }*/
+$usernamenotification = Session::getUser()->getUsername();
+$notifications = getNotifications($usernamenotification);
 ?>
-    </ul>
-    </body> -->
+<body>
+    <div class="container py-4">
+        <div class="p-5 mb-4 bg-body-tertiary rounded-3">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Hi, <?php echo $usernamenotification; ?></h1>
+                <p class="col-md-8 fs-4">Here are your bill requests from your friends:</p>
+            </div>
+        </div>
+        <div class="row">
+            <?php foreach ($notifications as $notification): ?>
+                <div class="col">
+                    <div class="card">
+                        <div class="card-header">
+                            <?= htmlspecialchars($notification["bill_title"]) ?>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars(
+                                $notification["bill_title"]
+                            ) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars(
+                                $notification["bill_cost"]
+                            ) ?></p>
+                            <p class="card-text"><?= htmlspecialchars(
+                                $notification["note"]
+                            ) ?></p>
+                            <form method="post" action="payotherbills">
+                                <input type="hidden" name="bill_id" value="<?= htmlspecialchars(
+                                    $notification["id"]
+                                ) ?>">
+                                <button type="submit" class="btn btn-primary">Pay bill</button>
+                            </form>
+                        </div>
+                        <div class="card-footer text-body-secondary">
+                            <?= htmlspecialchars($notification["created_at"]) ?>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</body>
