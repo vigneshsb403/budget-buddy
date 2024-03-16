@@ -1,17 +1,30 @@
 <?php
-// Check if the request method is POST and if the 'bill_id' parameter is set
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["bill_id"])) {
-    // Get the bill_id from the POST request
-    $bill_id = $_POST["bill_id"];
+include "lib/load.php";
+loadTemplate("header", ["login", "Budget buddy", "Budget buddy"]);
+if (
+    $_SERVER["REQUEST_METHOD"] == "POST" &&
+    isset($_POST["bill_title"]) &&
+    isset($_POST["bill_cost"]) &&
+    isset($_POST["created_at"])
+) {
+    // Get the data from the POST request
+    $bill_title = $_POST["bill_title"];
+    $bill_cost = $_POST["bill_cost"];
+    $created_at = $_POST["created_at"];
 
-    // Proceed with further processing
-    // For example, you can perform database operations, payment processing, etc.
-    // Here, we're just printing a message for demonstration purposes
-    echo "Bill with ID $bill_id is being paid.";
-    // Add your payment processing logic here
+    // Additional processing here, such as payment processing
+
+    // Example: Get the current user's username
+    $usernamepaybills = Session::getUser()->getUsername();
+    echo '<div class="container py-4">';
+    echo "Bill Title: $bill_title<br>";
+    echo "Bill Cost: $bill_cost<br>";
+    $unixTimestamp = strtotime($created_at);
+    $date = date("Y-m-d", $unixTimestamp);
+    echo "Converted Date: $date";
+    addExpenseToTable($date, $bill_cost);
+    echo "<br>bill added as expense.</div>";
 } else {
-    // If 'bill_id' parameter is not set or if the request method is not POST, do nothing or handle the error accordingly
-    // You can redirect the user to an error page, display an error message, etc.
     echo "Invalid request.";
 }
 ?>
