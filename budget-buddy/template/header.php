@@ -255,6 +255,12 @@
                                 : ""; ?>">About</a>
                         </li>
                         <li class="nav-item">
+                            <a href="/test2" class="nav-link <?php echo $activeMenuItem[0] ===
+                            "test2"
+                                ? "active"
+                                : ""; ?>">test 2</a>
+                        </li>
+                        <li class="nav-item">
                         <?if(Session::isAuthenticated()){?>
                             <a href="/?logout" class="nav-link">Logout</a>
 						<?} else {?>

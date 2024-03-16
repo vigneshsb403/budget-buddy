@@ -36,6 +36,26 @@ function changecurrency($cur)
     $stmt->close();
     $conn->close();
 }
+function getcurrency($paramname)
+{
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram";
+    $conn = new mysqli($servername, $username, $password, $database);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $stmt = $conn->prepare("SELECT currency FROM auth WHERE username = ?");
+
+    $stmt->bind_param("s", $paramname);
+    $stmt->execute();
+    $stmt->bind_result($rescurrency);
+    $stmt->fetch(); // Fetch the result
+    $stmt->close(); // Close the statement
+    return $rescurrency;
+}
+
 function loadTemplate($name, $activeMenuItem = [])
 {
     if ($activeMenuItem !== null) {
@@ -81,6 +101,8 @@ $wapi->initiateSession();
     if (!is_null($startDate) && !is_null($endDate)) {
         $sql .= " WHERE date BETWEEN '$startDate' AND '$endDate' AND user_name = '$usernamee'";
     }
+    $ifdivide = getcurrency($usernamee);
+    echo "<script> console.log(" . $ifdivide . ")</script>";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
         echo "<table class='table table-striped table-sm'>";
@@ -96,7 +118,13 @@ $wapi->initiateSession();
             echo "<tr>";
             echo "<td>" . $row["id"] . "</td>";
             echo "<td>" . $row["date"] . "</td>";
-            echo "<td>" . $row["expenditure_amount"] . "</td>";
+            if ($ifdivide) {
+                echo "<td> $" .
+                    number_format($row["expenditure_amount"] / 78, 2) .
+                    "</td>";
+            } else {
+                echo "<td> ₹" . $row["expenditure_amount"] . "</td>";
+            }
             echo "</tr>";
         }
         echo "</tbody>";
@@ -164,10 +192,13 @@ function fetchExpenditureData($table, $period)
     $result = $conn->query($sql);
     $labels = [];
     $data = [];
+    $ifdivide = getcurrency($usernamee);
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $labels[] = $row["date"];
-            $data[] = $row["total_amount"];
+            $data[] = $ifdivide
+                ? number_format($row["total_amount"] / 78, 2)
+                : $row["total_amount"];
         }
     } else {
         echo "No data available for the specified period";

@@ -19,11 +19,7 @@ $billCost = $data["splitAmount"];
 $note = $data["note"];
 $usernames = $data["usernames"];
 $creatername = Session::getUser()->getUsername();
-$ifdivide = getcurrency($creatername);
-$billllCost = $billCost;
-if ($ifdivide == 1) {
-    $billllCost = $billCost * 78;
-}
+
 // Prepare SQL query to check if all usernames are available in the auth table
 $sql =
     "SELECT username FROM auth WHERE username IN ('" .
@@ -41,7 +37,7 @@ if ($result->num_rows === count($usernames)) {
     $stmt->bind_param(
         "sdsss",
         $billTitle,
-        $billllCost,
+        $billCost,
         $note,
         $username,
         $creatername

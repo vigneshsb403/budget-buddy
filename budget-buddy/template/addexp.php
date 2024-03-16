@@ -55,9 +55,12 @@ function addExpenseToTable($date, $amount)
     $password = "example";
     $database = "vignesh_photogram";
     $usernamee = Session::getUser()->getUsername();
-    // Create connection
+    $ifdivide = getcurrency($usernamee);
     $conn = new mysqli($servername, $username, $password, $database);
-
+    $billllCost = $amount;
+    if ($ifdivide == 1) {
+        $billllCost = $amount * 78;
+    }
     // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -69,7 +72,7 @@ function addExpenseToTable($date, $amount)
     );
 
     // Bind parameters
-    $stmt->bind_param("sds", $date, $amount, $usernamee);
+    $stmt->bind_param("sds", $date, $billllCost, $usernamee);
 
     // Execute statement
     $stmt->execute();
