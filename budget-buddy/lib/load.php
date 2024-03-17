@@ -15,7 +15,7 @@ function changecurrencyy($cur)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -41,7 +41,7 @@ function getcurrency($paramname)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -72,7 +72,7 @@ $wapi->initiateSession();
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -146,7 +146,7 @@ function fetchExpenditureDataa($table, $period)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -229,7 +229,7 @@ function fetchExpenditureData($table, $period)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -308,7 +308,7 @@ function get_config($key, $default = null)
         "db_server": "db",
         "db_username": "root",
         "db_password": "example",
-        "db_name": "vignesh_photogram",
+        "db_name": "budget_buddies",
         "base_path": "/",
         "upload_path": "/home/sibidharan/photogram_uploads/"
     }'; // $array = json_decode($json_config, true);
@@ -316,7 +316,7 @@ function get_config($key, $default = null)
         "db_server" => "db",
         "db_username" => "root",
         "db_password" => "example",
-        "db_name" => "vignesh_photogram",
+        "db_name" => "budget_buddies",
         "base_path" => "/",
         "upload_path" => "/home/sibidharan/photogram_uploads/",
     ];
@@ -331,7 +331,7 @@ function fetchUserContactInfo($usernameprofile)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -352,7 +352,7 @@ function getNotifications($usernamenotification)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $conn = new mysqli($servername, $username, $password, $database);
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
@@ -375,7 +375,7 @@ function addExpenseToTable($date, $amount, $category, $note)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram";
+    $database = "budget_buddies";
     $usernamee = Session::getUser()->getUsername();
     $ifdivide = getcurrency($usernamee);
     $conn = new mysqli($servername, $username, $password, $database);
@@ -408,7 +408,7 @@ function deleteRecord($table, $condition, $params)
     $servername = "db";
     $username = "root";
     $password = "example";
-    $database = "vignesh_photogram"; // Create connection
+    $database = "budget_buddies"; // Create connection
     $conn = new mysqli($servername, $username, $password, $database); // Check connection
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);

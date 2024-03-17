@@ -2,7 +2,7 @@
   "db_server": "db",
   "db_username": "root",
   "db_password": "example",
-  "db_name": "vignesh_photogram",
+  "db_name": "budget_buddies",
   "base_path": "/",
-  "upload_path": "/home/sibidharan/photogram_uploads/"
+  "upload_path": "/home/uploads/"
 }

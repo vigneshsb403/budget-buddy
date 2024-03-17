@@ -2,7 +2,7 @@
 if (isset($_POST["currencyselect"])) {
     $currency = $_POST["currencyselect"];
     changecurrencyy($currency);
-    echo "<script>alert('Currency type changed')</script>"
+    echo "<script>alert('Currency type changed')</script>";
 } ?>
 <style>
 html,

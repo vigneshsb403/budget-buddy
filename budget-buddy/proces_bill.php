@@ -4,7 +4,7 @@ include "lib/load.php";
 $servername = "db";
 $username = "root";
 $password = "example";
-$database = "vignesh_photogram";
+$database = "budget_buddies";
 $conn = new mysqli($servername, $username, $password, $database);
 
 // Check connection
