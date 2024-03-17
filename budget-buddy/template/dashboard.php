@@ -109,10 +109,23 @@
 
           <ul class="nav flex-column mb-auto">
             <li class="nav-item">
-              <a class="nav-link d-flex align-items-center gap-2" href="/settings">
+              <!-- <a class="nav-link d-flex align-items-center gap-2" href="/settings">
                 <svg class="bi"><use xlink:href="#gear-wide-connected"/></svg>
                 Settings
               </a>
+              </li> -->
+            <li class="nav-link d-flex align-items-center gap-2">
+              <span style="color: #ff6384;">Food</span>
+            </li>
+            <li class="nav-link d-flex align-items-center gap-2">
+              <span style="color: #36a2eb;">Entertainment</span>
+            </li>
+            <li class="nav-link d-flex align-items-center gap-2">
+              <span style="color: #ffce56;">Business</span>
+            </li>
+            <li class="nav-link d-flex align-items-center gap-2">
+              <span style="color: #ff7f0e;">Other</span>
+            </li>
             </li>
             <li class="nav-item">
             </li>
@@ -120,7 +133,6 @@
         </div>
       </div>
     </div>
-
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2"><?= Session::getUser()->getUsername() ?>'s Dashboard</h1>

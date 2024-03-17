@@ -111,6 +111,8 @@ $wapi->initiateSession();
                   <th scope='col'>#</th>
                   <th scope='col'>Date</th>
                   <th scope='col'>Expenditure Amount</th>
+                  <th scope='col'>Category</th>
+                  <th scope='col'>Note</th>
                 </tr>
               </thead>";
         echo "<tbody>";
@@ -125,6 +127,8 @@ $wapi->initiateSession();
             } else {
                 echo "<td> ₹" . $row["expenditure_amount"] . "</td>";
             }
+            echo "<td>" . $row["category"] . "</td>";
+            echo "<td>" . $row["Note"] . "</td>";
             echo "</tr>";
         }
         echo "</tbody>";
@@ -136,7 +140,7 @@ $wapi->initiateSession();
 } ?>
 
 <?php
-function fetchExpenditureData($table, $period)
+function fetchExpenditureDataa($table, $period)
 {
     $usernamee = Session::getUser()->getUsername();
     $servername = "db";
@@ -219,6 +223,84 @@ function fetchExpenditureData($table, $period)
     ];
     return json_encode($chartData);
 }
+function fetchExpenditureData($table, $period)
+{
+    $usernamee = Session::getUser()->getUsername();
+    $servername = "db";
+    $username = "root";
+    $password = "example";
+    $database = "vignesh_photogram";
+    $conn = new mysqli($servername, $username, $password, $database);
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+    $startDate = "";
+    $endDate = "";
+    switch ($period) {
+        case "week":
+            $startDate = date("Y-m-d", strtotime("monday this week"));
+            $endDate = date("Y-m-d", strtotime("sunday this week"));
+            break;
+        case "month":
+            $startDate = date("Y-m-01");
+            $endDate = date("Y-m-t");
+            break;
+        case "year":
+            $startDate = date("Y-01-01");
+            $endDate = date("Y-12-31");
+            break;
+        case "history": // No need to set start and end date for history
+            break;
+        default: // Default behavior
+    } // Build SQL query based on period
+    $sql = "SELECT date, SUM(expenditure_amount) AS total_amount, category
+            FROM $table
+            WHERE user_name = '$usernamee'";
+    if ($period !== "history") {
+        $sql .= " AND date BETWEEN '$startDate' AND '$endDate'";
+    }
+    $sql .= " GROUP BY date, category";
+    $result = $conn->query($sql);
+    $labels = [];
+    $datasets = [];
+    $ifdivide = getcurrency($usernamee); // Define colors for different categories
+    $colors = [
+        "food" => "#ff6384",
+        "entertainment" => "#36a2eb",
+        "business" => "#ffce56",
+        "other" => "#ff7f0e",
+    ];
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $category = $row["category"];
+            $label = $row["date"];
+            $amount = $ifdivide
+                ? number_format($row["total_amount"] / 78, 2)
+                : $row["total_amount"]; // Add label if not already added
+            if (!in_array($label, $labels)) {
+                $labels[] = $label;
+            } // Add dataset for the category
+            if (!isset($datasets[$category])) {
+                $datasets[$category] = [
+                    "label" => $category,
+                    "data" => [],
+                    "backgroundColor" => $colors[$category],
+                    "borderColor" => $colors[$category],
+                    "borderWidth" => 4,
+                    "pointBackgroundColor" => $colors[$category],
+                    "lineTension" => 0,
+                ];
+            } // Add amount for the specific category dataset
+            $datasets[$category]["data"][] = $amount;
+        }
+    } // Assemble chart data
+    $chartData = [
+        "labels" => $labels,
+        "datasets" => array_values($datasets), // Resetting array keys to start from 0
+    ];
+    $conn->close();
+    return json_encode($chartData);
+}
 function get_config($key, $default = null)
 {
     global $__site_config;
@@ -288,7 +370,7 @@ function getNotifications($usernamenotification)
     $conn->close();
     return $notifications;
 }
-function addExpenseToTable($date, $amount)
+function addExpenseToTable($date, $amount, $category, $note)
 {
     $servername = "db";
     $username = "root";
@@ -306,9 +388,16 @@ function addExpenseToTable($date, $amount)
     }
     // Prepare SQL statement
     $stmt = $conn->prepare(
-        "INSERT INTO expenditure_data (date, expenditure_amount, user_name) VALUES (?, ?, ?)"
+        "INSERT INTO expenditure_data (date, expenditure_amount, user_name, category, note) VALUES (?, ?, ?, ?, ?)"
     ); // Bind parameters
-    $stmt->bind_param("sds", $date, $billllCost, $usernamee); // Execute statement
+    $stmt->bind_param(
+        "sdsss",
+        $date,
+        $billllCost,
+        $usernamee,
+        $category,
+        $note
+    ); // Execute statement
     $stmt->execute(); // Close statement and connection
     $stmt->close();
     $conn->close();
