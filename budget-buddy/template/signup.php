@@ -6,14 +6,23 @@ if (
     isset($_POST["password"]) and
     !empty($_POST["password"]) and
     isset($_POST["email_address"]) and
-    isset($_POST["phone"])
+    isset($_POST["phone"]) and
+    isset($_POST['g-recaptcha-response'])
 ) {
     $username = $_POST["username"];
     $password = $_POST["password"];
     $email = $_POST["email_address"];
     $phone = $_POST["phone"];
-    $error = User::signup($username, $password, $email, $phone);
-    $signup = true;
+    $recaptcha = $_POST['g-recaptcha-response'];
+    $res = reCaptcha($recaptcha);
+    if($res['success']){
+        $error = User::signup($username, $password, $email, $phone);
+        $signup = true;
+    } else{ ?>
+    <script>
+	window.location.href = "/signup?error=1"
+    </script>
+   <? }
 }
 ?>
 <style>
@@ -35,6 +44,8 @@ body {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .form-signin input[type="password"] {
@@ -42,7 +53,20 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+#floatingInputUsername {
+  margin-bottom: -1px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+#floatingInputpassword {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
 </style>
+<script src="https://www.google.com/recaptcha/api.js"></script>
 <?php if ($signup) {
     if ($error) { ?>
 <main class="container">
@@ -74,7 +98,7 @@ body {
 			<label for="floatingInputUsername">Username</label>
 		</div>
 		<div class="form-floating">
-			<input name="phone" type="text" class="form-control" id="floatingInputUsername"
+			<input name="phone" type="text" class="form-control" id="floatingInputpassword"
 				placeholder="name@example.com">
 			<label for="floatingInputUsername">Phone</label>
 		</div>
@@ -87,6 +111,8 @@ body {
 			<input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
 			<label for="floatingPassword">Password</label>
 		</div>
+		<div class="g-recaptcha brochure__form__captcha" data-sitekey="6LfImJspAAAAAL-6Mc9qBpgAv6jx-OqAPBwoAmB6"></div>
+		<br>
 		<button class="w-100 btn btn-lg btn-primary hvr-grow-rotate" type="submit">Sign up</button>
 	</form>
 </main>

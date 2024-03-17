@@ -3,12 +3,19 @@
 $login_page = true;
 
 //TODO: Redirect to a requested URL instead of base path on login_page
-if (isset($_POST["email_address"]) and isset($_POST["password"])) {
+if (
+    isset($_POST["email_address"]) and
+    isset($_POST["password"]) and
+    isset($_POST["g-recaptcha-response"])
+) {
     $email_address = $_POST["email_address"];
     $password = $_POST["password"];
-
-    $result = UserSession::authenticate($email_address, $password);
-    $login_page = false;
+    $recaptcha = $_POST["g-recaptcha-response"];
+    $res = reCaptcha($recaptcha);
+    if ($res["success"]) {
+        $result = UserSession::authenticate($email_address, $password);
+        $login_page = false;
+    }
 }
 
 if (!$login_page) {
@@ -66,6 +73,7 @@ body {
   border-top-right-radius: 0;
 }
 </style>
+<script src="https://www.google.com/recaptcha/api.js"></script>
 <main class="form-signin w-100 m-auto">
 	<form method="post" action="/login">
 		<h1 class="h3 mb-3 fw-normal">Please sign in</h1>
@@ -89,6 +97,8 @@ body {
 				<input type="checkbox" value="remember-me"> Remember me
 			</label>
 		</div>
+		<div class="g-recaptcha brochure__form__captcha" data-sitekey="6LfImJspAAAAAL-6Mc9qBpgAv6jx-OqAPBwoAmB6"></div>
+		<br>
 		<button class="w-100 btn btn-lg btn-primary hvr-grow-rotate" type="submit">Sign in</button>
 		<a href="/signup" class="w-100 btn btn-link">Not registered? Sign up</a>
 	</form>
