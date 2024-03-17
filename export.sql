@@ -37,14 +37,17 @@ CREATE TABLE `expenditure_data` (
   `date` date DEFAULT NULL,
   `expenditure_amount` decimal(10,2) DEFAULT NULL,
   `user_name` varchar(255) DEFAULT NULL,
+  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'other',
+  `Note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'None',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO `expenditure_data` (`id`, `date`, `expenditure_amount`, `user_name`) VALUES
-(2,	'2024-03-14',	123.00,	'vignesh'),
-(3,	'2024-03-12',	450.00,	'vignesh'),
-(4,	'2024-03-06',	1234.00,	'hacker'),
-(5,	'2024-03-13',	0.00,	'hacker');
+INSERT INTO `expenditure_data` (`id`, `date`, `expenditure_amount`, `user_name`, `category`, `Note`) VALUES
+(2,	'2024-03-14',	123.00,	'vignesh',	'other',	'None'),
+(3,	'2024-03-12',	450.00,	'vignesh',	'other',	'None'),
+(4,	'2024-03-06',	1234.00,	'hacker',	'other',	'None'),
+(5,	'2024-03-13',	0.00,	'hacker',	'other',	'None'),
+(6,	'2024-03-17',	1560.00,	'vignesh',	'food',	'testing');
 
 DROP TABLE IF EXISTS `likes`;
 CREATE TABLE `likes` (
@@ -133,7 +136,8 @@ INSERT INTO `session` (`id`, `uid`, `token`, `login_time`, `ip`, `user_agent`, `
 (7,	2,	'8551a32d42aad48aa624f8a0eac74fc4',	'2024-03-15 16:01:46',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
 (8,	2,	'7771ad8588b0319dfeb199f4675a3545',	'2024-03-15 16:02:20',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
 (9,	2,	'd813450c4b9406b81ec6e61f0cb684ad',	'2024-03-15 16:02:32',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
-(15,	1,	'dc3101fa51c95a954988bf64abb5d8ff',	'2024-03-15 17:51:08',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8');
+(15,	1,	'dc3101fa51c95a954988bf64abb5d8ff',	'2024-03-15 17:51:08',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8'),
+(16,	1,	'8aa04942723687ea11ac33c3f6021fd5',	'2024-03-17 19:17:52',	'192.168.65.1',	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3.1 Safari/605.1.15',	1,	'f86ae69cda320aeffef7555dd8da8dc8');
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -151,4 +155,4 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- 2024-03-16 07:13:10
+-- 2024-03-17 19:34:38
