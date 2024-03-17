@@ -14,22 +14,6 @@
         />
 
         <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <!-- <script>
-     			const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
-				.then(FingerprintJS => FingerprintJS.load())
-
-			// Get the visitor identifier when you need it.
-			fpPromise
-				.then(fp => fp.get())
-				.then(result => {
-					// This is the visitor identifier:
-					const visitorId = result.visitorId
-					// console.log(visitorId)
-					// $('#fingerprint').val(visitorId);
-					// set a cookie
-					setCookie('fingerprint', visitorId, 1);
-				})
-		</script> -->
 		<script>
   function setCookie(name, value, days) {
         var expires = "";
@@ -41,7 +25,6 @@
         document.cookie = name + "=" + (value || "") + expires + "; path=/";
     }
 
-    // Load FingerprintJS library and get the visitor identifier
     const fpPromise = import('https://openfpcdn.io/fingerprintjs/v3')
         .then(FingerprintJS => FingerprintJS.load())
         .then(fp => fp.get())
@@ -301,10 +284,10 @@
                                 : ""; ?>">About</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/test2" class="nav-link <?php echo $activeMenuItem[0] ===
+                            <a href="/profile" class="nav-link <?php echo $activeMenuItem[0] ===
                             "test2"
                                 ? "active"
-                                : ""; ?>">test 2</a>
+                                : ""; ?>">Profile</a>
                         </li>
                         <li class="nav-item">
                         <?if(Session::isAuthenticated()){?>

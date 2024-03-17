@@ -62,9 +62,9 @@
     document.getElementById('numSplitters').addEventListener('input', function () {
       const numSplitters = parseInt(this.value);
       const userInputsContainer = document.getElementById('userInputs');
-      userInputsContainer.innerHTML = ''; // Clear previous inputs
+      userInputsContainer.innerHTML = '';
 
-      const firstUsername = '<?= Session::getUser()->getUsername() ?>'; // Auto-fill first username
+      const firstUsername = '<?= Session::getUser()->getUsername() ?>';
 
       for (let i = 0; i < numSplitters; i++) {
         const userInputGroup = document.createElement('div');
@@ -140,7 +140,6 @@
       }
     });
 
-    // Show/hide manual split input based on checkbox state
     document.getElementById('autoSplit').addEventListener('change', function () {
       if (this.checked) {
         document.getElementById('manualSplitContainer').style.display = 'none';

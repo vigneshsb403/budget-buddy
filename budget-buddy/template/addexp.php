@@ -35,7 +35,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <script>
-  // Initialize Datepicker
   $(document).ready(function(){
     $('#datepicker').datepicker({
       format: 'yyyy-mm-dd',
@@ -46,44 +45,7 @@
 
 </body>
 <?php
-/*
-function addExpenseToTable($date, $amount)
-{
-    $servername = "db";
-    $username = "root";
-    $password = "example";
-    $database = "vignesh_photogram";
-    $usernamee = Session::getUser()->getUsername();
-    $ifdivide = getcurrency($usernamee);
-    $conn = new mysqli($servername, $username, $password, $database);
-    $billllCost = $amount;
-    if ($ifdivide == 1) {
-        $billllCost = $amount * 78;
-    }
-    // Check connection
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-
-    // Prepare SQL statement
-    $stmt = $conn->prepare(
-        "INSERT INTO expenditure_data (date, expenditure_amount, user_name) VALUES (?, ?, ?)"
-    );
-
-    // Bind parameters
-    $stmt->bind_param("sds", $date, $billllCost, $usernamee);
-
-    // Execute statement
-    $stmt->execute();
-
-    // Close statement and connection
-    $stmt->close();
-    $conn->close();
-}
-*/
-
 $hacked = 0;
-// Check if form is submitted
 if (isset($_POST["submit"])) {
     // Get form data
     $selectedDate = $_POST["selectedDate"];
