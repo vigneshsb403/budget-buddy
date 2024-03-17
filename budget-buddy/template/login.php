@@ -14,6 +14,12 @@ if (
     if ($res["success"]) {
         $result = UserSession::authenticate($email_address, $password);
         $login_page = false;
+    } elseif (!$res["success"]) { ?>
+    <script>
+	window.location.href = "/login?error=1"
+    </script>
+    <?
+
     }
 }
 
@@ -34,15 +40,12 @@ if (!$login_page) {
 	window.location.href = "<?= $redirect_to ?>"
 </script>
 
-<?php
-    } else {
-         ?>
+<?php } else { ?>
 <script>
 	window.location.href = "/login?error=1"
 </script>
 
-<?php
-    }
+<?php }
 } else {
      ?>
 <style>

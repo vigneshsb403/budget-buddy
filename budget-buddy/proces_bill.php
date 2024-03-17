@@ -2,10 +2,10 @@
 // Connect to the database
 include "lib/load.php";
 $servername = "db";
-$usernamee = "root";
+$username = "root";
 $password = "example";
 $database = "vignesh_photogram";
-$conn = new mysqli($servername, $usernamee, $password, $database);
+$conn = new mysqli($servername, $username, $password, $database);
 
 // Check connection
 if ($conn->connect_error) {
@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 // Get bill data from the request
-$data = json_decode(file_get_contents("php://input"), true);
+$data = json_decode($_POST["jsonData"], true);
 $billTitle = $data["billTitle"];
 $billCost = $data["splitAmount"];
 $note = $data["note"];
@@ -47,7 +47,6 @@ if ($result->num_rows === count($usernames)) {
         $creatername
     );
 
-    // Insert the bill for each username
     foreach ($usernames as $username) {
         $stmt->execute();
     }
@@ -55,13 +54,13 @@ if ($result->num_rows === count($usernames)) {
     // Close statement
     $stmt->close();
 
-    // Send success response
-    http_response_code(200);
-    echo json_encode(["message" => "Bill added successfully!"]);
+    // http_response_code(200);
+    // echo json_encode(["message" => "Bill added successfully!"]);
+    header("Location: /success?message=success");
 } else {
-    // Invalid usernames found, send error response
-    http_response_code(400);
-    echo json_encode(["error" => "One or more usernames are invalid."]);
+    // http_response_code(400);
+    // echo json_encode(["error" => "One or more usernames are invalid."]);
+    header("Location: /success?message=error");
 }
 
 // Close connection
